@@ -1,0 +1,34 @@
+#define SDL_MAIN_USE_CALLBACKS
+
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
+
+SDL_Window *window;
+SDL_Renderer *render;
+
+SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
+    if (!SDL_CreateWindowAndRenderer("Nova Stella", 800, 600, SDL_WINDOW_RESIZABLE, &window, &render)) {
+        SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Video Error: %s", SDL_GetError());
+    }
+    return SDL_APP_CONTINUE;
+}
+
+SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
+    switch (event->type) {
+        case SDL_EVENT_QUIT:
+            return SDL_APP_SUCCESS;
+            break;
+    }
+    return SDL_APP_CONTINUE;
+}
+
+SDL_AppResult SDL_AppIterate(void *appstate) {
+    SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
+    SDL_RenderClear(render);
+    SDL_RenderPresent(render);
+    SDL_Delay(100);
+    return SDL_APP_CONTINUE;
+}
+
+void SDL_AppQuit(void *appstate, SDL_AppResult result) {
+}
