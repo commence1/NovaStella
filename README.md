@@ -38,3 +38,4 @@ NovaStella 是一款基于 SDL3 开发的轻量级跨平台音乐播放器，目
 
 ### 联系方式
 ✉️ **项目负责人**: ahuaoih@outlook.com  
+                   2364045784@qq.com
