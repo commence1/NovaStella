@@ -3,7 +3,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
-#include <SDL3/SDL_log.h>
+
+#include <logger.hpp>
 
 SDL_Window *window;
 SDL_Renderer *render;
@@ -71,6 +72,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
                                    SDL_powf(event->button.y - (rect_center_button.y + rect_center_button.h / 2), 2);
             float right_distance = SDL_powf(event->button.x - (rect_right_button.x + rect_right_button.w / 2), 2) +
                                   SDL_powf(event->button.y - (rect_right_button.y + rect_right_button.h / 2), 2);
+#ifdef DEBUG
             if (left_distance <= SDL_powf(rect_left_button.w / 2, 2)) {
                 SDL_Log("点击了左按钮");
             } else if (center_distance <= SDL_powf(rect_center_button.w / 2, 2)) {
@@ -79,6 +81,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
             } else if (right_distance <= SDL_powf(rect_right_button.w / 2, 2)) {
                 SDL_Log("点击了右按钮");
             }
+#endif
             break;
         }
     }
