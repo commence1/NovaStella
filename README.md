@@ -22,7 +22,6 @@ NovaStella 是一款基于 SDL3 开发的轻量级跨平台音乐播放器，目
 - **开发语言**: C/C++
 - **跨平台支持**:
   - Windows (Win32/UWP)
-  - macOS
   - Linux
   - 可能的移动端移植
 
