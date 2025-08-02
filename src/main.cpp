@@ -5,6 +5,7 @@
 #include <SDL3_image/SDL_image.h>
 
 #include <logger.hpp>
+#include <init.hpp>
 
 SDL_Window *window;
 SDL_Renderer *render;
@@ -26,32 +27,32 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
         logger::error(SDL_LOG_CATEGORY_VIDEO, "初始化失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    backgroundTexture = IMG_LoadTexture(render, "../image/context.jpg");
+    backgroundTexture = IMG_LoadTexture(render, "image/context.jpg");
     if (!backgroundTexture) {
         logger::error(SDL_LOG_CATEGORY_VIDEO, "加载背景图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    SDL_Surface* iconSurface = IMG_Load("../image/icon.jpg");
+    SDL_Surface* iconSurface = IMG_Load("image/icon.jpg");
     if (!iconSurface) {
         logger::error(SDL_LOG_CATEGORY_VIDEO, "加载图标失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    leftButtonTexture = IMG_LoadTexture(render, "../image/left_button.png");
+    leftButtonTexture = IMG_LoadTexture(render, "image/left_button.png");
     if (!leftButtonTexture) {
         logger::error(SDL_LOG_CATEGORY_VIDEO, "加载左按钮图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    centerButtonTexture = IMG_LoadTexture(render, "../image/center_button.png");
+    centerButtonTexture = IMG_LoadTexture(render, "image/center_button.png");
     if (!centerButtonTexture) {
         logger::error(SDL_LOG_CATEGORY_VIDEO, "加载中按钮图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    centerButtonTexture2 = IMG_LoadTexture(render, "../image/center_button2.png");
+    centerButtonTexture2 = IMG_LoadTexture(render, "image/center_button2.png");
     if (!centerButtonTexture2) {
         logger::error(SDL_LOG_CATEGORY_VIDEO, "加载第二张中按钮图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    rightButtonTexture = IMG_LoadTexture(render, "../image/right_button.png");
+    rightButtonTexture = IMG_LoadTexture(render, "image/right_button.png");
     if (!rightButtonTexture) {
         logger::error(SDL_LOG_CATEGORY_VIDEO, "加载右按钮图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;

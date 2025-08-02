@@ -4,9 +4,9 @@ project(NovaStella VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp src/play.cpp)
 
-include_directories(PUBLIC Includes/)
+target_include_directories(${PROJECT_NAME} PUBLIC Includes/)
 
 find_package(SDL3 REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${SDL3_INCLUDE_DIRS})
@@ -20,11 +20,18 @@ find_package(fmt REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${fmt_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt)
 
+find_package(FFmpeg REQUIRED)
+target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
+
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     $<TARGET_FILE:SDL3::SDL3>
     $<TARGET_FILE:SDL3_image::SDL3_image>
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/image"
+    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/image")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME} PUBLIC DEBUG)
