@@ -18,7 +18,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC SDL3_image::SDL3_image)
 
 find_package(fmt REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${fmt_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt)
+target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt-header-only)
 
 find_package(FFmpeg REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
