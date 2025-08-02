@@ -11,27 +11,27 @@
 #include <fmt/format.h>
 
 namespace logger {
-    template<typename... Args> void log(const char *fmt, Args... args);
-    template<typename... Args> void info(int category, const char *fmt, Args... args);
-    template<typename... Args> void debug(int category, const char *fmt, Args... args);
-    template<typename... Args> void warn(int category, const char *fmt, Args... args);
-    template<typename... Args> void error(int category, const char *fmt, Args... args);
-    template<typename... Args> void log(const std::string &fmt, Args... args);
-    template<typename... Args> void info(int category, const std::string &fmt, Args... args);
-    template<typename... Args> void debug(int category, const std::string &fmt, Args... args);
-    template<typename... Args> void warn(int category, const std::string &fmt, Args... args);
-    template<typename... Args> void error(int category, const std::string &fmt, Args... args);
+    template<typename... Args> void log(bool write, const char *fmt, Args... args);
+    template<typename... Args> void info(bool write, int category, const char *fmt, Args... args);
+    template<typename... Args> void debug(bool write, int category, const char *fmt, Args... args);
+    template<typename... Args> void warn(bool write, int category, const char *fmt, Args... args);
+    template<typename... Args> void error(bool write, int category, const char *fmt, Args... args);
+
+    template<typename... Args> void log(bool write, const std::string &fmt, Args... args);
+    template<typename... Args> void info(bool write, int category, const std::string &fmt, Args... args);  
+    template<typename... Args> void debug(bool write, int category, const std::string &fmt, Args... args);
+    template<typename... Args> void warn(bool write, int category, const std::string &fmt, Args... args);
+    template<typename... Args> void error(bool write, int category, const std::string &fmt, Args... args);
 
     class logger_write_error : public std::exception {
     private:
-        std::string error;
+        std::string msg;
     public:
-        logger_write_error(const char *message) : error(message) {}
-        logger_write_error(const std::string &message) : error(message) {}
+        explicit logger_write_error(const char *message) : msg(message) {}
+        explicit logger_write_error(const std::string &message) : msg(message) {}
         const char *what() const noexcept override {
-            return error.c_str();
+            return msg.c_str();
         }
-        virtual ~logger_write_error() = default;
     };
 }
 

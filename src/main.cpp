@@ -24,37 +24,37 @@ static void SDL_RenderCircle(SDL_Renderer *render, float x, float y, float radiu
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
     if (!SDL_CreateWindowAndRenderer("Nova Stella", 570, 335, SDL_WINDOW_EXTERNAL, &window, &render)) {
-        logger::error(SDL_LOG_CATEGORY_VIDEO, "初始化失败: {}", SDL_GetError());
+        logger::error(true, SDL_LOG_CATEGORY_VIDEO, "初始化失败: {}", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     backgroundTexture = IMG_LoadTexture(render, "image/context.jpg");
     if (!backgroundTexture) {
-        logger::error(SDL_LOG_CATEGORY_VIDEO, "加载背景图片失败: {}", SDL_GetError());
+        logger::error(true, SDL_LOG_CATEGORY_VIDEO, "加载背景图片失败: {}", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     SDL_Surface* iconSurface = IMG_Load("image/icon.jpg");
     if (!iconSurface) {
-        logger::error(SDL_LOG_CATEGORY_VIDEO, "加载图标失败: {}", SDL_GetError());
+        logger::error(true, SDL_LOG_CATEGORY_VIDEO, "加载图标失败: {}", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     leftButtonTexture = IMG_LoadTexture(render, "image/left_button.png");
     if (!leftButtonTexture) {
-        logger::error(SDL_LOG_CATEGORY_VIDEO, "加载左按钮图片失败: {}", SDL_GetError());
+        logger::error(true, SDL_LOG_CATEGORY_VIDEO, "加载左按钮图片失败: {}", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     centerButtonTexture = IMG_LoadTexture(render, "image/center_button.png");
     if (!centerButtonTexture) {
-        logger::error(SDL_LOG_CATEGORY_VIDEO, "加载中按钮图片失败: {}", SDL_GetError());
+        logger::error(true, SDL_LOG_CATEGORY_VIDEO, "加载中按钮图片失败: {}", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     centerButtonTexture2 = IMG_LoadTexture(render, "image/center_button2.png");
     if (!centerButtonTexture2) {
-        logger::error(SDL_LOG_CATEGORY_VIDEO, "加载第二张中按钮图片失败: {}", SDL_GetError());
+        logger::error(true, SDL_LOG_CATEGORY_VIDEO, "加载第二张中按钮图片失败: {}", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     rightButtonTexture = IMG_LoadTexture(render, "image/right_button.png");
     if (!rightButtonTexture) {
-        logger::error(SDL_LOG_CATEGORY_VIDEO, "加载右按钮图片失败: {}", SDL_GetError());
+        logger::error(true, SDL_LOG_CATEGORY_VIDEO, "加载右按钮图片失败: {}", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     SDL_SetWindowIcon(window, iconSurface);
@@ -75,12 +75,12 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
                                   SDL_powf(event->button.y - (rect_right_button.y + rect_right_button.h / 2), 2);
 #ifdef DEBUG
             if (left_distance <= SDL_powf(rect_left_button.w / 2, 2)) {
-                logger::log("点击了左按钮");
+                logger::log(false, "点击了左按钮");
             } else if (center_distance <= SDL_powf(rect_center_button.w / 2, 2)) {
-                logger::log("点击了中按钮");
+                logger::log(false, "点击了中按钮");
                 centerButtonState = !centerButtonState;
             } else if (right_distance <= SDL_powf(rect_right_button.w / 2, 2)) {
-                logger::log("点击了右按钮");
+                logger::log(false, "点击了右按钮");
             }
 #endif
             break;
