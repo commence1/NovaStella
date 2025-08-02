@@ -1,11 +1,6 @@
 {
   "dependencies": [
-    {
-      "name": "ffmpeg",
-      "features": [
-        "all"
-      ]
-    },
+    "ffmpeg",
     "fmt",
     "sdl3",
     {
