@@ -11,17 +11,17 @@
 #include <fmt/format.h>
 
 namespace logger {
-    template<typename... Args> void log(bool write, const char *fmt, Args... args);
-    template<typename... Args> void info(bool write, int category, const char *fmt, Args... args);
-    template<typename... Args> void debug(bool write, int category, const char *fmt, Args... args);
-    template<typename... Args> void warn(bool write, int category, const char *fmt, Args... args);
-    template<typename... Args> void error(bool write, int category, const char *fmt, Args... args);
+    template<typename... Args> void log(const char *fmt, Args... args);
+    template<typename... Args> void info(const char *fmt, Args... args);
+    template<typename... Args> void debug(const char *fmt, Args... args);
+    template<typename... Args> void warn(const char *fmt, Args... args);
+    template<typename... Args> void error(const char *fmt, Args... args);
 
-    template<typename... Args> void log(bool write, const std::string &fmt, Args... args);
-    template<typename... Args> void info(bool write, int category, const std::string &fmt, Args... args);  
-    template<typename... Args> void debug(bool write, int category, const std::string &fmt, Args... args);
-    template<typename... Args> void warn(bool write, int category, const std::string &fmt, Args... args);
-    template<typename... Args> void error(bool write, int category, const std::string &fmt, Args... args);
+    template<typename... Args> void log(const std::string &fmt, Args... args);
+    template<typename... Args> void info(const std::string &fmt, Args... args);  
+    template<typename... Args> void debug(const std::string &fmt, Args... args);
+    template<typename... Args> void warn(const std::string &fmt, Args... args);
+    template<typename... Args> void error(const std::string &fmt, Args... args);
 
     class logger_write_error : public std::exception {
     private:

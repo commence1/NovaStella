@@ -2,13 +2,8 @@
 
 #include <logger.hpp>
 
-template<typename... Args> void logger::log(bool write, const char *fmt, Args... args) {
+template<typename... Args> void logger::log(const char *fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_Log("%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -21,13 +16,8 @@ template<typename... Args> void logger::log(bool write, const char *fmt, Args...
         throw logger_write_error("Failed to write to file: \"" + filePath.string() + "\"");
     }
 }
-template<typename... Args> void logger::info(bool write, int category, const char *fmt, Args... args) {
+template<typename... Args> void logger::info(const char *fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_LogInfo(category, "%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -40,13 +30,8 @@ template<typename... Args> void logger::info(bool write, int category, const cha
         throw logger_write_error("Failed to write to file: \"" + filePath.string() + "\"");
     }
 }
-template<typename... Args> void logger::debug(bool write, int category, const char *fmt, Args... args) {
+template<typename... Args> void logger::debug(const char *fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_LogDebug(category, "%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -60,13 +45,8 @@ template<typename... Args> void logger::debug(bool write, int category, const ch
     }
 }
 
-template<typename... Args> void logger::warn(bool write, int category, const char *fmt, Args... args) {
+template<typename... Args> void logger::warn(const char *fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_LogWarn(category, "%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -79,13 +59,8 @@ template<typename... Args> void logger::warn(bool write, int category, const cha
         throw logger_write_error("Failed to write to file: \"" + filePath.string() + "\"");
     }
 }
-template<typename... Args> void logger::error(bool write, int category, const char *fmt, Args... args) {
+template<typename... Args> void logger::error(const char *fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_LogError(category, "%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -99,13 +74,8 @@ template<typename... Args> void logger::error(bool write, int category, const ch
     }
 }
 
-template<typename... Args> void logger::log(bool write, const std::string &fmt, Args... args) {
+template<typename... Args> void logger::log(const std::string &fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_Log("%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -118,13 +88,8 @@ template<typename... Args> void logger::log(bool write, const std::string &fmt, 
         throw logger_write_error("Failed to write to file: \"" + filePath.string() + "\"");
     }    
 }
-template<typename... Args> void logger::info(bool write, int category, const std::string &fmt, Args... args) {
+template<typename... Args> void logger::info(const std::string &fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_LogInfo(category, "%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -137,13 +102,8 @@ template<typename... Args> void logger::info(bool write, int category, const std
         throw logger_write_error("Failed to write to file: \"" + filePath.string() + "\"");
     }
 }
-template<typename... Args> void logger::debug(bool write, int category, const std::string &fmt, Args... args) {
+template<typename... Args> void logger::debug(const std::string &fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_LogDebug(category, "%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -156,13 +116,8 @@ template<typename... Args> void logger::debug(bool write, int category, const st
         throw logger_write_error("Failed to write to file: \"" + filePath.string() + "\"");
     }
 }
-template<typename... Args> void logger::warn(bool write, int category, const std::string &fmt, Args... args) {
+template<typename... Args> void logger::warn(const std::string &fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_LogWarn(category, "%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
@@ -175,13 +130,8 @@ template<typename... Args> void logger::warn(bool write, int category, const std
         throw logger_write_error("Failed to write to file: \"" + filePath.string() + "\"");
     }
 }
-template<typename... Args> void logger::error(bool write, int category, const std::string &fmt, Args... args) {
+template<typename... Args> void logger::error(const std::string &fmt, Args... args) {
     std::string message = fmt::format(fmt, std::forward<Args>(args)...);
-
-    SDL_LogError(category, "%s", message.c_str());
-
-    if (!write)
-        return;
 
     const auto filePath = std::filesystem::path("logs") / "log.log";
     std::filesystem::create_directory("logs");
