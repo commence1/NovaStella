@@ -139,7 +139,6 @@ static void SDL_RenderCircle(SDL_Renderer *render, float x, float y, float radiu
     int32_t error = -cy;
 
     while (cx <= cy) {
-        // 绘制水平线来填充圆形
         SDL_RenderLine(render, x - cy, y + cx, x + cy, y + cx);
         SDL_RenderLine(render, x - cy, y - cx, x + cy, y - cx);
         SDL_RenderLine(render, x - cx, y + cy, x + cx, y + cy);
