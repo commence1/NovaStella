@@ -164,17 +164,28 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 }
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
-    if (backgroundTexture) SDL_DestroyTexture(backgroundTexture);
-    if (render) SDL_DestroyRenderer(render);
-    if (window) SDL_DestroyWindow(window);
-    if (iconTexture) SDL_DestroyTexture(iconTexture);
-    if (leftButtonTexture) SDL_DestroyTexture(leftButtonTexture);
-    if (centerButtonTexture) SDL_DestroyTexture(centerButtonTexture);
-    if (centerButtonTexture2) SDL_DestroyTexture(centerButtonTexture2);
-    if (rightButtonTexture) SDL_DestroyTexture(rightButtonTexture);
-    if (iconSurface) SDL_DestroySurface(iconSurface);
-    if (blurTexture) SDL_DestroyTexture(blurTexture);
-    if (barTexture) SDL_DestroyTexture(barTexture);
+    if (backgroundTexture)
+        SDL_DestroyTexture(backgroundTexture);
+    if (render)
+        SDL_DestroyRenderer(render);
+    if (window)
+        SDL_DestroyWindow(window);
+    if (iconTexture)
+        SDL_DestroyTexture(iconTexture);
+    if (leftButtonTexture)
+        SDL_DestroyTexture(leftButtonTexture);
+    if (centerButtonTexture)
+        SDL_DestroyTexture(centerButtonTexture);
+    if (centerButtonTexture2)
+        SDL_DestroyTexture(centerButtonTexture2);
+    if (rightButtonTexture)
+        SDL_DestroyTexture(rightButtonTexture);
+    if (iconSurface)
+        SDL_DestroySurface(iconSurface);
+    if (blurTexture)
+        SDL_DestroyTexture(blurTexture);
+    if (barTexture) 
+        SDL_DestroyTexture(barTexture);
     SDL_Quit();
 }
 

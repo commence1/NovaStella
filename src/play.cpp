@@ -1,5 +1,9 @@
 #include <init.hpp>
 
+#define MINIMP3_IMPLEMENTATION
+
+#include <minimp3/minimp3.h>
+
 void play_mp3(const std::string &filePath) {
     std::ifstream file(filePath, std::ios::binary | std::ios::ate);
     if (!file) {
@@ -23,12 +27,12 @@ void play_mp3(const std::string &filePath) {
     int mp3len = 0;
 
     mp3dec_frame_info_t info;
-    int samples = mp3dec_decode_frame(&mp3d, buffer.data(), size, nullptr, &info);
+    int samples = mp3dec_decode_frame(&mp3d, buffer.data(), size, pcm, &info);
 
     while (samples) {
         
         mp3len += info.frame_bytes;
-        samples = mp3dec_decode_frame(&mp3d, buffer.data() + mp3len, size - mp3len, pcm, &info);
+        samples = mp3dec_decode_frame(&mp3d, buffer.data() + mp3len, static_cast<int>(size) - mp3len, pcm, &info);
     }
 }
 
