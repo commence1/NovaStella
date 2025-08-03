@@ -21,6 +21,7 @@ static const SDL_FRect rect_center_button = { 250, 250, 70, 70 };
 static const SDL_FRect rect_right_button = { 440, 250, 50, 50 };
 static void render_button(const SDL_FRect *rect, const char *str, int button_value);
 static void SDL_RenderCircle(SDL_Renderer *render, float x, float y, float radius);
+void audio_callback(void* userdata, SDL_AudioStream* stream, int additional_amount, int total_amount);
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
     if (!SDL_CreateWindowAndRenderer("Nova Stella", 570, 335, SDL_WINDOW_EXTERNAL, &window, &render)) {
@@ -154,3 +155,6 @@ static void SDL_RenderCircle(SDL_Renderer *render, float x, float y, float radiu
     }
 }
 
+void audio_callback(void* userdata, SDL_AudioStream* stream, int additional_amount, int total_amount) {
+    
+}
