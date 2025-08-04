@@ -4,6 +4,8 @@
 
 #include <minimp3/minimp3.h>
 
+std::vector<unsigned char> buffer;
+
 void play_mp3(const std::string &filePath) {
     std::ifstream file(filePath, std::ios::binary | std::ios::ate);
     if (!file) {
@@ -12,8 +14,9 @@ void play_mp3(const std::string &filePath) {
     }
     const auto size = file.tellg();
 
+    buffer = std::vector<unsigned char>(size);
+
     file.seekg(0, std::ios::beg);
-    std::vector<unsigned char> buffer(size);
 
     if (!file.read(reinterpret_cast<char*>(buffer.data()), size)) {
         throw std::runtime_error("Error: Failed to read file");
@@ -38,4 +41,9 @@ void play_mp3(const std::string &filePath) {
 
 void play() {
     
+}
+
+void audio_callback(void* userdata, SDL_AudioStream* stream, int additional_amount, int total_amount) {
+    (void)userdata;
+    size_t remaining = (buffer.size());
 }

@@ -238,7 +238,3 @@ static void SDL_RenderCircle(SDL_Renderer *render, float x, float y, float radiu
         }
     }
 }
-
-void audio_callback(void* userdata, SDL_AudioStream* stream, int additional_amount, int total_amount) {
-    
-}
