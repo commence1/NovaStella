@@ -20,6 +20,9 @@ find_package(fmt REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${fmt_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt-header-only)
 
+find_path(MINIMP3_INCLUDE_DIRS "minimp3/minimp3.h")
+target_include_directories(${PROJECT_NAME} PUBLIC ${MINIMP3_INCLUDE_DIRS})
+
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     $<TARGET_FILE:SDL3::SDL3>
