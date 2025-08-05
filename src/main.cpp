@@ -49,7 +49,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
         return SDL_APP_FAILURE;
     }
 
-    backgroundTexture = IMG_LoadTexture(render, "image/context.jpg");
+    backgroundTexture = IMG_LoadTexture(render, "./image/context.jpg");
     if (!backgroundTexture) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "加载背景图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
@@ -64,7 +64,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
     SDL_SetTextureBlendMode(blurTexture, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(blurTexture, 128);
     
-    SDL_Surface* iconSurface = IMG_Load("image/icon.jpg");
+    SDL_Surface* iconSurface = IMG_Load("../image/icon.jpg");
     if (!iconSurface) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "加载图标失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
@@ -79,22 +79,22 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
     SDL_SetTextureBlendMode(barTexture, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(barTexture, 180);
 
-    leftButtonTexture = IMG_LoadTexture(render, "image/left_button.png");
+    leftButtonTexture = IMG_LoadTexture(render, "../image/left_button.png");
     if (!leftButtonTexture) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "加载左按钮图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    centerButtonTexture = IMG_LoadTexture(render, "image/center_button.png");
+    centerButtonTexture = IMG_LoadTexture(render, "../image/center_button.png");
     if (!centerButtonTexture) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "加载中按钮图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    centerButtonTexture2 = IMG_LoadTexture(render, "image/center_button2.png");
+    centerButtonTexture2 = IMG_LoadTexture(render, "../image/center_button2.png");
     if (!centerButtonTexture2) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "加载第二张中按钮图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    rightButtonTexture = IMG_LoadTexture(render, "image/right_button.png");
+    rightButtonTexture = IMG_LoadTexture(render, "../image/right_button.png");
     if (!rightButtonTexture) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "加载右按钮图片失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
