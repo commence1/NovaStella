@@ -10,6 +10,10 @@
         "tiff",
         "webp"
       ]
-    }
+    },
+    "libflac",
+    "minimp3",
+    "libogg",
+    "faad2"
   ]
 }
