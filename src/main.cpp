@@ -21,16 +21,11 @@ static int centerButtonState = 0;
 bool leftButtonHover = false;
 bool centerButtonHover = false;
 bool rightButtonHover = false;
-static bool isPlaying = false;
 static const SDL_FRect rect_left_button = { 50, 280, 25, 25 };
 static const SDL_FRect rect_center_button = { 120, 280, 25, 25 };
 static const SDL_FRect rect_right_button = { 190, 280, 25, 25 };
-static float audio_duration_ms = 0.0f;
-static float audio_playback_ms = 0.0f;
 static void render_button(const SDL_FRect *rect, const char *str, int button_value, bool isHover);
 static void SDL_RenderCircle(SDL_Renderer *render, float x, float y, float radius);
-void audio_callback(void* userdata, SDL_AudioStream* stream, int additional_amount, int total_amount);
-void play_mp3(const std::string &filePath);
 
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
@@ -122,10 +117,6 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
                                 SDL_powf(event->button.y - (rect_right_button.y + rect_right_button.h / 2), 2);
             if (center_distance <= SDL_powf(rect_center_button.w / 2, 2)) {
                 centerButtonState = (centerButtonState + 1) % 2;
-                if (!isPlaying) {
-                    play_mp3("audio/music.mp3");
-                    isPlaying = true;
-                }
             }   
             break;
         }
@@ -175,22 +166,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     render_button(&rect_left_button, "LEFT", -1, leftButtonHover);
     render_button(&rect_center_button, "CENTER", 0, centerButtonHover);
     render_button(&rect_right_button, "RIGHT", 1, rightButtonHover);
-
-    if (isPlaying && audio_duration_ms > 0) {
-        float progress = audio_playback_ms * 1.0f / audio_duration_ms;
-        SDL_FRect progressBgRect = { 50, 320, 470, 5 };
-        SDL_SetRenderDrawColor(render, 100, 100, 100, 255);
-        SDL_RenderFillRect(render, &progressBgRect);
-        SDL_FRect progressRect = { 50, 320, 470 * progress, 5};
-        SDL_SetRenderDrawColor(render, 255, 182, 193, 255);
-        SDL_RenderFillRect(render, &progressRect);
-        if (isPlaying && audio_playback_ms >= audio_duration_ms) {
-            isPlaying = false;
-            centerButtonState = 0;
-            progressRect.w = 470;
-            SDL_RenderFillRect(render, &progressRect);
-        }
-    }
 
     SDL_RenderPresent(render);
     return SDL_APP_CONTINUE;
