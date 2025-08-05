@@ -4,7 +4,7 @@ project(NovaStella VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(${PROJECT_NAME} src/main.cpp src/play.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC Includes/)
 
@@ -20,8 +20,9 @@ find_package(fmt REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${fmt_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt-header-only)
 
-find_path(MINIMP3_INCLUDE_DIRS "minimp3/minimp3.h")
-target_include_directories(${PROJECT_NAME} PUBLIC ${MINIMP3_INCLUDE_DIRS})
+find_package(FFMPEG REQUIRED)
+target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
