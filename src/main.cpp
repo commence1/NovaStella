@@ -5,7 +5,6 @@
 #include <SDL3_image/SDL_image.h>
 
 #include <logger.hpp>
-#include <init.hpp>
 
 SDL_Window *window;
 SDL_Renderer *render;
