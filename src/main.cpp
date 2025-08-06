@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
+#include <SDL3/SDL_render.h>
 
 #include <logger.hpp>
 
@@ -11,13 +12,13 @@
 
 SDL_Window *window;
 SDL_Renderer *render;
-SDL_Texture* backgroundTexture = NULL;
-SDL_Texture* iconTexture = NULL;
-SDL_Texture* leftButtonTexture = NULL;
-SDL_Texture* centerButtonTexture = NULL;
-SDL_Texture* centerButtonTexture2 = NULL;
-SDL_Texture* rightButtonTexture = NULL;
-SDL_Texture* blurTexture = NULL;
+SDL_Texture *backgroundTexture = NULL;
+SDL_Texture *iconTexture = NULL;
+SDL_Texture *leftButtonTexture = NULL;
+SDL_Texture *centerButtonTexture = NULL;
+SDL_Texture *centerButtonTexture2 = NULL;
+SDL_Texture *rightButtonTexture = NULL;
+static SDL_Texture* blurTexture = NULL;
 SDL_Texture* barTexture = NULL;
 SDL_Surface* iconSurface = NULL;
 static int centerButtonState = 0;
@@ -53,7 +54,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
         return SDL_APP_FAILURE;
     }
 
-    blurTexture = SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 4);
+    blurTexture = SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 570 / 4, 335 / 4);
     if (!blurTexture) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "创建模糊纹理失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
@@ -61,6 +62,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
     
     SDL_SetTextureBlendMode(blurTexture, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(blurTexture, 128);
+
+    SDL_SetTextureBlendMode(blurTexture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureAlphaMod(blurTexture, 180);
     
     SDL_Surface* iconSurface = IMG_Load("../image/icon.jpg");
     if (!iconSurface) {
@@ -245,3 +249,4 @@ static void SDL_RenderCircle(SDL_Renderer *render, float x, float y, float radiu
         }
     }
 }
+
