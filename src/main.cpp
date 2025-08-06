@@ -35,23 +35,9 @@ void play_mp3(const std::string &filePath);
 
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "视频初始化失败: %s", SDL_GetError());
-        return SDL_APP_FAILURE;
-    }
 
-    if (!SDL_CreateWindowAndRenderer("Nova Stella", 570, 335, SDL_WINDOW_EXTERNAL, &window, &render)) {
+    if (SDL_CreateWindowAndRenderer("Nova Stella", 570, 335, SDL_WINDOW_EXTERNAL, &window, &render)) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "初始化失败: %s", SDL_GetError());
-        return SDL_APP_FAILURE;
-    }
-
-    if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0) {
-        SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "音频初始化失败: %s", SDL_GetError());
-    }
-
-    if (SDL_InitSubSystem(SDL_INIT_EVENTS) != 0) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "事件系统初始化失败: %s", SDL_GetError());
-        SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
         return SDL_APP_FAILURE;
     }
 
@@ -107,7 +93,10 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
     }
     SDL_SetWindowIcon(window, iconSurface);
     SDL_SetRenderDrawColor(render, 0, 0, 0, 0);
-    return SDL_APP_CONTINUE;
+    SDL_SetTextureBlendMode(barTexture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureAlphaMod(barTexture, 180);
+
+    return SDL_APP_SUCCESS;
 }
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {

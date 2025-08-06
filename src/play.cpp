@@ -7,6 +7,7 @@
 #include <fstream>
 #include <thread>
 #include <stdexcept>
+#include <cstring>
 
 SDL_AudioDeviceID audio_device = 0;     
 SDL_AudioStream* audio_stream = nullptr;  
@@ -14,13 +15,6 @@ std::atomic<int> audio_duration_ms{0};
 std::atomic<int> audio_playback_ms{0};    
 std::atomic<bool> is_playing{false};   
 
-bool init_sdl_audio() {
-    if (SDL_Init(SDL_INIT_AUDIO) != 0) {
-        SDL_Log("初始化SDL音频子系统失败: %s", SDL_GetError());
-        return false;
-    }
-    return true;
-}
 
 void cleanup_audio() {
     if (audio_stream) {
@@ -35,22 +29,27 @@ void cleanup_audio() {
 }
 
 void play_mp3(const std::string &filePath) {
-    static bool sdl_initialized = init_sdl_audio();
-    if (!sdl_initialized) {
-        throw std::runtime_error("音频子系统初始化失败");
-    }
     cleanup_audio();
+
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS) != 0) {
+    const char* error = SDL_GetError();
+    if (error && strlen(error) > 0) {
+        throw std::runtime_error("Unable to initialize SDL: " + std::string(error));
+    } else {
+        throw std::runtime_error("Unable to initialize SDL: Unknown error (SDL library may not be loaded correctly)");
+    }
+    }
 
     std::ifstream file(filePath, std::ios::binary | std::ios::ate);
     if (!file) {
-        throw std::runtime_error("无法打开文件: " + filePath);
+        throw std::runtime_error("Unable to open file: " + filePath);
     }
 
     const size_t size = file.tellg();
     file.seekg(0, std::ios::beg);
     std::vector<unsigned char> buffer(size);
     if (!file.read(reinterpret_cast<char*>(buffer.data()), size)) {
-        throw std::runtime_error("读取文件失败: " + filePath);
+        throw std::runtime_error("Failed to read the file:" + filePath);
     }
 
     mp3dec_t mp3d;
@@ -86,12 +85,12 @@ void play_mp3(const std::string &filePath) {
 
     audio_device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
     if (!audio_device) {
-        throw std::runtime_error("无法打开音频设备: " + std::string(SDL_GetError()));
+        throw std::runtime_error("Unable to open audio device: " + std::string(SDL_GetError()));
     }
 
     audio_stream = SDL_CreateAudioStream(&spec, &spec);
     if (!audio_stream) {
-        throw std::runtime_error("无法创建音频流: " + std::string(SDL_GetError()));
+        throw std::runtime_error("Unable to create audio stream:" + std::string(SDL_GetError()));
     }
 
     SDL_ResumeAudioDevice(audio_device);

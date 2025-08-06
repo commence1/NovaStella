@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <thread>
 #include <atomic>
+#include <thread>
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_audio.h>
