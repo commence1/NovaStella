@@ -54,7 +54,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *args[]) {
         return SDL_APP_FAILURE;
     }
 
-    blurTexture = SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 570 / 4, 335 / 4);
+    blurTexture = SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 4);
     if (!blurTexture) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "创建模糊纹理失败: %s", SDL_GetError());
         return SDL_APP_FAILURE;
