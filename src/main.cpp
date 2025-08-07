@@ -4,13 +4,10 @@
 
 #include<glm/glm.hpp>
 
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
-
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
-SDL_Window *window;
+SDL_Window *window{nullptr};
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **args) {
     window = SDL_CreateWindow("Nova Stella", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE);
