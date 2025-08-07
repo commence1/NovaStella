@@ -1,5 +1,7 @@
 #define SDL_MAIN_USE_CALLBACKS
 
+#include <vulkan/vulkan.hpp>
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>

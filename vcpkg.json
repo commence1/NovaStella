@@ -12,6 +12,8 @@
       ]
     },
     "ffmpeg",
-    "boost-log"
+    "boost-log",
+    "vulkan",
+    "glm"
   ]
 }
