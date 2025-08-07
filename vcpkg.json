@@ -11,6 +11,7 @@
         "webp"
       ]
     },
-    "ffmpeg"
+    "ffmpeg",
+    "boost-log"
   ]
 }
