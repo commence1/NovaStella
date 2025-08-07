@@ -18,8 +18,9 @@ NovaStella 是一款基于 SDL3 开发的轻量级跨平台音乐播放器，目
 
 ## 技术特点
 
-- **核心库**: SDL3 (Simple DirectMedia Layer 3)
-              Vulkan
+- **核心库**:
+  - SDL3 (Simple DirectMedia Layer 3)
+  - Vulkan
 - **开发语言**: C/C++
 - **跨平台支持**:
   - Windows (Win32/UWP)
