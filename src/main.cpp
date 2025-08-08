@@ -1,5 +1,7 @@
 #define SDL_MAIN_USE_CALLBACKS
 
+#include <boost/log/trivial.hpp>
+
 #include <vulkan-init.hpp>
 
 #include<glm/glm.hpp>
@@ -17,11 +19,19 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **args) {
     vulkaninit.vulkan_init();
 
     if (!window) {
+#ifdef DEBUG
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Failed to create window: %s", SDL_GetError());
+#elif
+        
+#endif
         return SDL_APP_FAILURE;
     }
     if (!SDL_InitSubSystem(SDL_INIT_AUDIO)) {
+#ifdef DEBUG
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Failed to initialize audio: %s", SDL_GetError());
+#elif
+        
+#endif
         return SDL_APP_FAILURE;
     }
     return SDL_APP_CONTINUE;
