@@ -12,5 +12,6 @@ vk::raii::Instance instance{nullptr};
 public:
     void vulkan_init();
     void create();
+    void interate();
     void clean();
 };
