@@ -24,9 +24,33 @@ find_package(FFMPEG REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
 
+find_package(glm REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC glm::glm-header-only)
+
 find_package(Vulkan REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${VULKAN_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC Vulkan::Vulkan)
+
+if(WIN32)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC 
+        BOOST_ALL_NO_LIB
+        BOOST_LOG_USE_NATIVE_SYSLOG
+    )
+endif()
+
+find_package(Boost COMPONENTS log log_setup filesystem system thread date_time regex chrono atomic REQUIRED)
+target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    Boost::log
+    Boost::log_setup
+    Boost::filesystem
+    Boost::system
+    Boost::thread
+    Boost::date_time
+    Boost::regex
+    Boost::chrono
+    Boost::atomic
+)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -36,5 +60,5 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME} PUBLIC DEBUG)
 else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -O3)
+    target_compile_options(${PROJECT_NAME} PUBLIC -O3)
 endif()

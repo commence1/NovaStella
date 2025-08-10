@@ -9,14 +9,8 @@
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
-                "CMAKE_C_COMPILER": "gcc",
-                "CMAKE_CXX_COMPILER": "g++",
-                "VCPKG_MANIFEST_INSTALL": "ON",
-                "VCPKG_APPLOCAL_DEPS": "ON",
-                "VCPKG_PLATFORM_TOOLSET": "MinGW",
-                "VCPKG_DISABLE_COMPILER_TRACKING": "ON"
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
+
             }
         },
         {
@@ -27,12 +21,7 @@
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
-                "CMAKE_C_COMPILER": "gcc",
-                "CMAKE_CXX_COMPILER": "g++",
-                "VCPKG_MANIFEST_INSTALL": "ON",
-                "VCPKG_APPLOCAL_DEPS": "ON"
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
             }
         }
     ]
