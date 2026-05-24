@@ -8,15 +8,23 @@
 #include <thread>
 #include <stdexcept>
 #include <cstring>
+#include <mutex>
 
 SDL_AudioDeviceID audio_device = 0;     
 SDL_AudioStream* audio_stream = nullptr;  
 std::atomic<int> audio_duration_ms{0};  
 std::atomic<int> audio_playback_ms{0};    
 std::atomic<bool> is_playing{false};   
-
+static std::thread playback_thread;
+static std::mutex audio_mutex;
+static std::atomic<bool> should_stop{false};
 
 void cleanup_audio() {
+    should_stop = true;
+    if (playback_thread.joinable()) {
+        playback_thread.join();
+    }
+    std::lock_guard<std::mutex> lock(audio_mutex);
     if (audio_stream) {
         SDL_DestroyAudioStream(audio_stream);
         audio_stream = nullptr;
@@ -26,19 +34,11 @@ void cleanup_audio() {
         audio_device = 0;
     }
     is_playing = false;
+    should_stop = false;
 }
 
 void play_mp3(const std::string &filePath) {
     cleanup_audio();
-
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS) != 0) {
-    const char* error = SDL_GetError();
-    if (error && strlen(error) > 0) {
-        throw std::runtime_error("Unable to initialize SDL: " + std::string(error));
-    } else {
-        throw std::runtime_error("Unable to initialize SDL: Unknown error (SDL library may not be loaded correctly)");
-    }
-    }
 
     std::ifstream file(filePath, std::ios::binary | std::ios::ate);
     if (!file) {
@@ -74,7 +74,8 @@ void play_mp3(const std::string &filePath) {
         channels = info.channels;
     }
 
-    audio_duration_ms = total_samples * 1000 / sample_rate;
+    int duration = total_samples * 1000 / sample_rate;
+    audio_duration_ms.store(duration);
     audio_playback_ms = 0;
     is_playing = true;
 
@@ -83,46 +84,59 @@ void play_mp3(const std::string &filePath) {
     spec.format = SDL_AUDIO_S16;
     spec.channels = static_cast<Uint8>(channels);
 
-    audio_device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
-    if (!audio_device) {
-        throw std::runtime_error("Unable to open audio device: " + std::string(SDL_GetError()));
+    {
+        std::lock_guard<std::mutex> lock(audio_mutex);
+        audio_device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
+        if (!audio_device) {
+            throw std::runtime_error("Unable to open audio device: " + std::string(SDL_GetError()));
+        }
+
+        audio_stream = SDL_CreateAudioStream(&spec, &spec);
+        if (!audio_stream) {
+            throw std::runtime_error("Unable to create audio stream:" + std::string(SDL_GetError()));
+        }
+
+        SDL_BindAudioStream(audio_device, audio_stream);
+        SDL_ResumeAudioDevice(audio_device);
+        SDL_PutAudioStreamData(audio_stream, full_pcm_data.data(), 
+                              full_pcm_data.size() * sizeof(int16_t));
+        SDL_FlushAudioStream(audio_stream);
     }
 
-    audio_stream = SDL_CreateAudioStream(&spec, &spec);
-    if (!audio_stream) {
-        throw std::runtime_error("Unable to create audio stream:" + std::string(SDL_GetError()));
-    }
+    const int bytes_per_ms = (sample_rate * channels * sizeof(int16_t)) / 1000;
+    const int total_bytes = static_cast<int>(full_pcm_data.size() * sizeof(int16_t));
 
-    SDL_ResumeAudioDevice(audio_device);
-    SDL_PutAudioStreamData(audio_stream, full_pcm_data.data(), 
-                          full_pcm_data.size() * sizeof(int16_t));
-    SDL_FlushAudioStream(audio_stream);
-
-    std::thread([&]() {
-        const int bytes_per_ms = (sample_rate * channels * sizeof(int16_t)) / 1000;
-        const int total_bytes = full_pcm_data.size() * sizeof(int16_t);
-        
-        while (is_playing) {
+    playback_thread = std::thread([total_bytes, bytes_per_ms, duration]() {
+        while (!should_stop && is_playing) {
             int available = SDL_GetAudioStreamAvailable(audio_stream);
-            if (available <= 0) break;
-            
             int played_bytes = total_bytes - available;
-            audio_playback_ms = played_bytes / bytes_per_ms;
             
+            if (played_bytes >= total_bytes) {
+                audio_playback_ms.store(duration);
+                is_playing.store(false);
+                break;
+            }
+            
+            if (available <= 0 && played_bytes > 0) {
+                audio_playback_ms.store(duration);
+                is_playing.store(false);
+                break;
+            }
+            
+            audio_playback_ms = played_bytes / bytes_per_ms;
             SDL_Delay(50);
         }
-        
-        audio_playback_ms.store(audio_duration_ms.load());
-        is_playing.store(false);
-    }).detach();
+    });
 }
 
 void stop_playback() {
     is_playing = false;
     cleanup_audio();
+    audio_playback_ms = 0;
 }
 
 float get_playback_progress() {
-    if (audio_duration_ms == 0) return 0.0f;
-    return static_cast<float>(audio_playback_ms) / audio_duration_ms;
+    int duration = audio_duration_ms.load();
+    if (duration == 0) return 0.0f;
+    return static_cast<float>(audio_playback_ms.load()) / duration;
 }
